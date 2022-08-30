@@ -26,9 +26,14 @@ app.get("/posts", async (req, res) => {
 
 app.post("/posts", (req, res) => {
   const { title } = req.body;
-  const id = randomId();
+  const post = { id: randomId(), title };
 
-  posts[id] = { id, title };
+  posts[post.id] = post;
+
+  axios.post("http://localhost:4005/events", {
+    type: "CREATED_POST",
+    payload: post,
+  });
 
   return res.status(201).send(posts);
 });

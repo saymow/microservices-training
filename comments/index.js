@@ -1,5 +1,6 @@
 const express = require("express");
-const cors = require('cors')
+const axios = require("axios");
+const cors = require("cors");
 
 const app = express();
 const commentsByPostId = {};
@@ -16,13 +17,18 @@ app.get("/posts/:id/comments", (req, res) => {
 app.post("/posts/:id/comments", (req, res) => {
   const { content } = req.body;
   const postId = req.params.id;
-  const id = randomId();
+  const comment = { id: randomId(), content };
 
   if (!(postId in commentsByPostId)) {
     commentsByPostId[postId] = [];
   }
 
-  commentsByPostId[postId].push({ id, content });
+  commentsByPostId[postId].push(comment);
+
+  axios.post("http://localhost:4005/events", {
+    type: "CREATED_COMMENT",
+    payload: { postId, comment },
+  });
 
   return res.status(201).send(commentsByPostId[postId]);
 });
