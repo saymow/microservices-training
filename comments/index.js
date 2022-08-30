@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors')
 
 const app = express();
 const commentsByPostId = {};
@@ -6,6 +7,7 @@ const commentsByPostId = {};
 const randomId = () => Math.random().toString("16");
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/posts/:id/comments", (req, res) => {
   return res.send(commentsByPostId[req.params.id] ?? []);

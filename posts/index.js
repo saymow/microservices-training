@@ -1,10 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 const posts = {};
 
 const randomId = () => Math.random().toString("16");
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/posts", (req, res) => {
