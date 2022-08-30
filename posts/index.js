@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const cors = require("cors");
 
 const app = express();
@@ -9,7 +10,17 @@ const randomId = () => Math.random().toString("16");
 app.use(cors());
 app.use(express.json());
 
-app.get("/posts", (req, res) => {
+const getPostComments = async (postId) => {
+  return axios
+    .get(`http://localhost:4001/posts/${postId}/comments`)
+    .then((res) => res.data);
+};
+
+app.get("/posts", async (req, res) => {
+  for (const post of Object.values(posts)) {
+    posts[post.id].comments = await getPostComments(post.id);
+  }
+
   return res.send(posts);
 });
 
