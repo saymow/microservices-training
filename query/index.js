@@ -26,6 +26,16 @@ app.post("/events", (req, res) => {
     posts[postId].comments.push(comment);
   }
 
+  if (type === "UPDATED_COMMENT") {
+    const { postId, comment } = payload;
+
+    const commentIdx = posts[postId].comments.findIndex(
+      (__comment) => __comment.id === comment.id
+    );
+
+    posts[postId].comments.splice(commentIdx, 1, comment);
+  }
+
   console.log(posts);
 
   return res.status(201).send(posts);
