@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const cors = require("cors");
 
 const app = express();
@@ -7,12 +8,10 @@ const posts = {};
 app.use(cors());
 app.use(express.json());
 
-app.get("/posts", async (req, res) => {
-  return res.send(posts);
-});
+const handleEvent = (data) => {
+  const { type, payload } = data;
 
-app.post("/events", (req, res) => {
-  const { type, payload } = req.body;
+  console.log("Processing: ", type);
 
   if (type === "CREATED_POST") {
     const { id, title } = payload;
@@ -37,8 +36,24 @@ app.post("/events", (req, res) => {
   }
 
   console.log(posts);
+};
+
+app.get("/posts", async (req, res) => {
+  return res.send(posts);
+});
+
+app.post("/events", (req, res) => {
+  const { type, payload } = req.body;
+
+  handleEvent({ type, payload });
 
   return res.status(201).send(posts);
 });
 
-app.listen(4002, () => console.log("Listening on port 4002."));
+app.listen(4002, () => {
+  console.log("Listening on port 4002.");
+  axios
+    .get("http://localhost:4005/events")
+    .then((res) => res.data)
+    .then((events) => events.forEach((event) => handleEvent(event)));
+});
