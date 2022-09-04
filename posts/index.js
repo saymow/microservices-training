@@ -38,4 +38,7 @@ app.post("/posts", (req, res) => {
   return res.status(201).send(posts);
 });
 
-app.listen(4000, () => console.log("Listening on port 4000."));
+app.listen(4000, () => {
+  console.log("Listening on port 4000.")
+  console.log("Testing updating docker-kubectl img 2.0.")
+});

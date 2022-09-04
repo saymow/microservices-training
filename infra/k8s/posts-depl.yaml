@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: posts
-          image: saymow/posts:0.0.1
+          image: saymow/posts
           resources:
             limits: 
               memory: "128Mi"
