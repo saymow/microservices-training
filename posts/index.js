@@ -30,7 +30,7 @@ app.post("/posts", (req, res) => {
 
   posts[post.id] = post;
 
-  axios.post("http://localhost:4005/events", {
+  axios.post("http://event-bus-srv:4005/events", {
     type: "CREATED_POST",
     payload: post,
   });

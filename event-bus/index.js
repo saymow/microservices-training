@@ -10,10 +10,14 @@ app.post("/events", (req, res) => {
   const event = req.body;
 
   events.push(event);
-  axios.post("http://localhost:4000/events", event).catch(() => {});
-  axios.post("http://localhost:4001/events", event).catch(() => {});
-  axios.post("http://localhost:4002/events", event).catch(() => {});
-  axios.post("http://localhost:4003/events", event).catch(() => {});
+  
+  console.log(`Emitting event: ${event.type}`);
+  axios.post("http://posts-clusterip-srv:4000/events", event).catch(() => {
+    console.log("Can't post to posts-clusterip-srv:4000/events");
+  });
+  // axios.post("http://localhost:4001/events", event).catch(() => {});
+  // axios.post("http://localhost:4002/events", event).catch(() => {});
+  // axios.post("http://localhost:4003/events", event).catch(() => {});
 
   return res.sendStatus(200);
 });
