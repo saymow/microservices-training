@@ -15,9 +15,15 @@ app.post("/events", (req, res) => {
   axios.post("http://posts-clusterip-srv:4000/events", event).catch(() => {
     console.log("Can't post to posts-clusterip-srv:4000/events");
   });
-  // axios.post("http://localhost:4001/events", event).catch(() => {});
-  // axios.post("http://localhost:4002/events", event).catch(() => {});
-  // axios.post("http://localhost:4003/events", event).catch(() => {});
+  axios.post("http://comments-clusterip-srv:4001/events", event).catch(() => {
+    console.log("Can't post to comments-clusterip-srv:4001/events");
+  });
+  axios.post("http://query-clusterip-srv:4002/events", event).catch(() => {
+    console.log("Can't post to query-clusterip-srv:4002/events");
+  });
+  axios.post("http://moderation-srv:4003/events", event).catch(() => {
+    console.log("Can't post to moderation-srv:4003/events");
+  });
 
   return res.sendStatus(200);
 });

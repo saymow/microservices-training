@@ -53,7 +53,7 @@ app.post("/events", (req, res) => {
 app.listen(4002, () => {
   console.log("Listening on port 4002.");
   axios
-    .get("http://localhost:4005/events")
+    .get("http://event-bus-srv:4005/events")
     .then((res) => res.data)
     .then((events) => events.forEach((event) => handleEvent(event)));
 });

@@ -21,7 +21,7 @@ app.post("/events", async (req, res) => {
   if (type === "CREATED_COMMENT") {
     const { postId, comment } = payload;
 
-    axios.post("http://localhost:4005/events", {
+    axios.post("http://event-bus-srv:4005/events", {
       type: "COMMENT_MODERATION",
       payload: {
         commentId: comment.id,
