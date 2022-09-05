@@ -25,7 +25,7 @@ app.post("/posts/:id/comments", (req, res) => {
 
   commentsByPostId[postId].push(comment);
 
-  axios.post("http://localhost:4005/events", {
+  axios.post("http://event-bus-srv:4005/events", {
     type: "CREATED_COMMENT",
     payload: { postId, comment },
   });
@@ -50,7 +50,7 @@ app.post("/events", (req, res) => {
       }
     }
 
-    axios.post("http://localhost:4005/events", {
+    axios.post("http://event-bus-srv:4005/events", {
       type: "UPDATED_COMMENT",
       payload: responseEventPayload,
     });

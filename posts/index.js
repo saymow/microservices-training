@@ -12,7 +12,7 @@ app.use(express.json());
 
 const getPostComments = async (postId) => {
   return axios
-    .get(`http://localhost:4001/posts/${postId}/comments`)
+    .get(`http://comments-clusterip-srv:4001/posts/${postId}/comments`)
     .then((res) => res.data);
 };
 
