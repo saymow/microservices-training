@@ -24,7 +24,7 @@ app.get("/posts", async (req, res) => {
   return res.send(posts);
 });
 
-app.post("/posts", (req, res) => {
+app.post("/posts/create", (req, res) => {
   const { title } = req.body;
   const post = { id: randomId(), title };
 
