@@ -1,4 +1,5 @@
 import express from "express";
+import "express-async-errors";
 import { errorHandler } from "./middlewares/error-handler";
 import { RouteNotFoundError } from "./errors";
 import * as routes from "./routes";
@@ -11,7 +12,7 @@ Object.values(routes).forEach((route) => {
   app.use("/api/users", route);
 });
 
-app.all('*', (req) => {
+app.all("*", (req) => {
   throw new RouteNotFoundError(req.originalUrl);
 });
 app.use(errorHandler);
