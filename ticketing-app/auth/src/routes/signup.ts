@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { body, validationResult } from "express-validator";
+import { RequestValidationError, DatabaseConnectionError } from "../errors";
 
 const router = Router();
 
@@ -16,10 +17,12 @@ router.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      throw new Error('Invalid email or password.')
+      throw new RequestValidationError(errors.array());
     }
 
     const { email, password } = req.body;
+
+    throw new DatabaseConnectionError();
 
     res.send("to-dodd");
   }
