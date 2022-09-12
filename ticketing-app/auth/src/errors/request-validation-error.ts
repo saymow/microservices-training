@@ -6,7 +6,6 @@ export class RequestValidationError extends CustomError {
 
   constructor(private readonly errors: ValidationError[]) {
     super("RequestValidationError");
-
     Object.setPrototypeOf(this, RequestValidationError.prototype);
   }
 
