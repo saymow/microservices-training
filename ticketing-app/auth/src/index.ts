@@ -5,6 +5,7 @@ import cookieSession from "cookie-session";
 import * as routes from "./routes";
 import { errorHandler } from "./middlewares/error-handler";
 import { RouteNotFoundError } from "./errors";
+import { ensureEnvVariables } from "./env";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(errorHandler);
 
 const start = async () => {
   try {
+    ensureEnvVariables();
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
     console.log("Connected to mongodb");
     app.listen(3000, () => console.log("Listening on port 3000."));

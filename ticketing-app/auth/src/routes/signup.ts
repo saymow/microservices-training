@@ -4,6 +4,7 @@ import { RequestValidationError } from "../errors";
 import { BadRequestError } from "../errors/bad-request-error";
 import { User } from "../models/user";
 import jwt from "jsonwebtoken";
+import { ENV } from "../env";
 
 const router = Router();
 
@@ -39,7 +40,7 @@ router.post(
         id: user._id,
         email: user.email,
       },
-      "secret"
+      ENV.JWT_KEY
     );
 
     req.session = {
