@@ -55,4 +55,13 @@ describe("SignUp Route", () => {
       .send({ email: "valid-email@mail.com", password: "valid-password" })
       .expect(400);
   });
+
+  it("Should set cookie on success", async () => {
+    const response = await request(app)
+      .post("/api/users/signup")
+      .send({ email: "valid-email@mail.com", password: "valid-password" })
+      .expect(201);
+
+    expect(response.get("Set-Cookie")).toBeDefined();
+  });
 });
