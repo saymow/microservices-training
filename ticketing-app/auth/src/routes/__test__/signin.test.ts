@@ -29,4 +29,24 @@ describe("SignIn Route", () => {
       })
       .expect(400);
   });
+
+  it("Should set cookie on success", async () => {
+    await request(app)
+      .post("/api/users/signup")
+      .send({
+        email: "valid-email@mail.com",
+        password: "valid-password",
+      })
+      .expect(201);
+
+    const response = await request(app)
+      .post("/api/users/signin")
+      .send({
+        email: "valid-email@mail.com",
+        password: "valid-password",
+      })
+      .expect(200);
+
+    expect(response.get("Set-Cookie")).toBeDefined();
+  });
 });
