@@ -12,4 +12,12 @@ describe("CurrentUser Route", () => {
 
     expect(response.body.currentUser.email).toEqual("valid-email@mail.com");
   });
+
+  it("Should return null if not authenticated", async () => {
+    const response = await request(app)
+      .get("/api/users/currentuser")
+      .expect(200);
+
+    expect(response.body.currentUser).toBeNull();
+  });
 });
