@@ -11,4 +11,14 @@ describe("SignUp Route", () => {
       })
       .expect(201);
   });
+
+  it("Should returns 400 if email is invalid", async () => {
+    return request(app)
+      .post("/api/users/signup")
+      .send({
+        email: "invalid-email",
+        password: "valid-password",
+      })
+      .expect(400);
+  });
 });
