@@ -37,10 +37,22 @@ describe("SignUp Route", () => {
       .post("/api/users/signup")
       .send({ email: "valid-email@mail.com" })
       .expect(400);
-    
-      await request(app)
+
+    await request(app)
       .post("/api/users/signup")
       .send({ password: "valid-password" })
+      .expect(400);
+  });
+
+  it("Should not create accounts with duplicate emails", async () => {
+    await request(app)
+      .post("/api/users/signup")
+      .send({ email: "valid-email@mail.com", password: "valid-password" })
+      .expect(201);
+
+    await request(app)
+      .post("/api/users/signup")
+      .send({ email: "valid-email@mail.com", password: "valid-password" })
       .expect(400);
   });
 });
