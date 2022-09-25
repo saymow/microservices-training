@@ -1,0 +1,48 @@
+import { useState } from "react";
+import Router from "next/router";
+import useRequest from "../../hooks/use-request";
+
+function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { execute, errors } = useRequest({
+    url: "/api/users/signin",
+    method: "post",
+    body: { email, password },
+    onSuccess: () => Router.push("/"),
+  });
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await execute();
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h1>Sign In</h1>
+      <div className="form-group">
+        <label>Email address</label>
+        <input
+          type="text"
+          className="form-control"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label>Password</label>
+        <input
+          type="password"
+          className="form-control"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+
+      {errors && <div className="m-2">{errors}</div>}
+      <button className="btn btn-primary">Sign up</button>
+    </form>
+  );
+}
+
+export default SignIn;
