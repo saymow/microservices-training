@@ -1,11 +1,10 @@
-import axios from "axios";
 import React from "react";
 import buildClient from "../api/build-client";
 
 function LandingPage({ currentUser }) {
   console.log();
 
-  return <h1>You are {!currentUser && "not"} signed in</h1> ;
+  return <h1>You are {!currentUser && "not"} signed in</h1>;
 }
 
 LandingPage.getInitialProps = async (ctx) => {
