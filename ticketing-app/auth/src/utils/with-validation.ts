@@ -1,5 +1,5 @@
 import { ValidationChain } from "express-validator";
-import { validateRequest } from "../middlewares/validate-request";
+import { validateRequest } from "@saymowtickets/common";
 
 export function withValidation(...validationChain: ValidationChain[]) {
   return [validationChain, validateRequest];

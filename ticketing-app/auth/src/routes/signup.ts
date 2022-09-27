@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 import { ENV } from "../env";
-import { BadRequestError } from "../errors/bad-request-error";
+import { BadRequestError } from "@saymowtickets/common";
 import { User } from "../models/user";
 import { withValidation } from "../utils/with-validation";
 

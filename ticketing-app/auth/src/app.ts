@@ -3,8 +3,7 @@ import "express-async-errors";
 import mongoose from "mongoose";
 import cookieSession from "cookie-session";
 import * as routes from "./routes";
-import { errorHandler } from "./middlewares/error-handler";
-import { RouteNotFoundError } from "./errors";
+import { errorHandler, RouteNotFoundError } from "@saymowtickets/common";
 import { ensureEnvVariables } from "./env";
 
 const app = express();
