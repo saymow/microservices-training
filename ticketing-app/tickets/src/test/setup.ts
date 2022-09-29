@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import request from "supertest";
 
 process.env.JWT_KEY = "jwt-key";
+process.env.MONGO_URI = "MONGO_URI";
 
 import { app } from "../app";
 

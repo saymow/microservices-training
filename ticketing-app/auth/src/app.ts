@@ -1,10 +1,9 @@
+import { errorHandler, RouteNotFoundError } from "@saymowtickets/common";
+import cookieSession from "cookie-session";
 import express from "express";
 import "express-async-errors";
-import mongoose from "mongoose";
-import cookieSession from "cookie-session";
-import * as routes from "./routes";
-import { errorHandler, RouteNotFoundError } from "@saymowtickets/common";
 import { ensureEnvVariables } from "./env";
+import * as routes from "./routes";
 
 const app = express();
 
