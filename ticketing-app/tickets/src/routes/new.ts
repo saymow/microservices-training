@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.post(
   "/tickets",
-  currentUser,
   authentication,
   (req: Request, res: Response) => {
     res.sendStatus(200);

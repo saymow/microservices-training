@@ -10,6 +10,12 @@ describe("api/tickets Route", () => {
 
   it("Should should have authentication", async () => {
     await request(app).post("/api/tickets").send({}).expect(401);
+    const response = await request(app)
+      .post("/api/tickets")
+      .set("Cookie", global.auth())
+      .send({});
+
+    expect(response.status).not.toEqual(401);
   });
 
   it("Should returns an error on invalid input (title)", async () => {});
