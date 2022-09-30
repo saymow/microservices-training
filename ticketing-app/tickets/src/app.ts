@@ -1,4 +1,8 @@
-import { errorHandler, RouteNotFoundError } from "@saymowtickets/common";
+import {
+  currentUser,
+  errorHandler,
+  RouteNotFoundError,
+} from "@saymowtickets/common";
 import cookieSession from "cookie-session";
 import express from "express";
 import "express-async-errors";
@@ -16,6 +20,7 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   })
 );
+app.use(currentUser);
 
 Object.values(routes).forEach((route) => {
   app.use("/api", route);
