@@ -8,7 +8,9 @@ describe("api/tickets Route", () => {
     expect(response.statusCode).not.toBe(404);
   });
 
-  it("Should should have authentication", async () => {});
+  it("Should should have authentication", async () => {
+    await request(app).post("/api/tickets").send({}).expect(401);
+  });
 
   it("Should returns an error on invalid input (title)", async () => {});
 
