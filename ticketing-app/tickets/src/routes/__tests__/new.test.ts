@@ -18,9 +18,43 @@ describe("api/tickets Route", () => {
     expect(response.status).not.toEqual(401);
   });
 
-  it("Should returns an error on invalid input (title)", async () => {});
+  it("Should returns an error on invalid input (title)", async () => {
+    await request(app)
+      .post("/api/tickets")
+      .set("Cookie", global.auth())
+      .send({
+        title: "",
+        price: 10,
+      })
+      .expect(400);
 
-  it("Should returns an error on invalid input (price)", async () => {});
+    await request(app)
+      .post("/api/tickets")
+      .set("Cookie", global.auth())
+      .send({
+        price: 10,
+      })
+      .expect(400);
+  });
+
+  it("Should returns an error on invalid input (price)", async () => {
+    await request(app)
+      .post("/api/tickets")
+      .set("Cookie", global.auth())
+      .send({
+        title: "valid-title",
+        price: -10,
+      })
+      .expect(400);
+
+    await request(app)
+      .post("/api/tickets")
+      .set("Cookie", global.auth())
+      .send({
+        title: "valid-title",
+      })
+      .expect(400);
+  });
 
   it("Should should create a ticket on success", async () => {});
 });
