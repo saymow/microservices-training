@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { ENV } from "../env";
 import { BadRequestError } from "@saymowtickets/common";
 import { User } from "../models/user";
-import { withValidation } from "../utils/with-validation";
+import { withValidation } from "@saymowtickets/common";
 
 const router = Router();
 
