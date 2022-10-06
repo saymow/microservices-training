@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 
-describe("api/tickets Route", () => {
+describe("Post api/tickets Route", () => {
   it("Should be defined", async () => {
     const response = await request(app).post("/api/tickets").send({});
 
