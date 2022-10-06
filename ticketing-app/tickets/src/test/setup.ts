@@ -37,7 +37,7 @@ afterAll(async () => {
 
 global.auth = () => {
   const payload = {
-    id: "valid_id",
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: "valid_email@mail.com",
   };
   const sessionJSON = JSON.stringify({
