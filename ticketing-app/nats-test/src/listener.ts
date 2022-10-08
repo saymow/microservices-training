@@ -1,17 +1,19 @@
 import nats from "node-nats-streaming";
+import { randomBytes } from "crypto";
 
 console.clear();
 
-const client = nats.connect("ticketing", "123", {
+const client = nats.connect("ticketing", randomBytes(4).toString('hex'), {
   url: "http://localhost:4222",
 });
 
 client.on("connect", () => {
   console.log("listener connected");
 
-  const subscription = client.subscribe("ticket:created");
+  const subscription = client.subscribe("ticket:created", "listener-queue-group");
 
   subscription.on("message", (msg) => {
-    console.log("message received");
+    const [seq, data] = [msg.getSequence(), msg.getData()];
+    console.log(`Received event ${seq}: ${data}`);
   });
 });
