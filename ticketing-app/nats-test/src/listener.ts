@@ -1,4 +1,4 @@
-import nats from "node-nats-streaming";
+import nats, { Message, Stan } from "node-nats-streaming";
 import { randomBytes } from "crypto";
 
 console.clear();
@@ -10,30 +10,63 @@ const client = nats.connect("ticketing", randomBytes(4).toString("hex"), {
 client.on("connect", () => {
   console.log("listener connected");
 
-  const option = client
-    .subscriptionOptions()
-    .setManualAckMode(true)
-    .setDeliverAllAvailable()
-    .setDurableName('accounting-service');
-  const subscription = client.subscribe(
-    "ticket:created",
-    "listener-queue-group",
-    option
-  );
-
-  subscription.on("close", () => {
+  client.on("close", () => {
     console.log("NATS process terminated.");
     process.exit();
   });
 
-  subscription.on("message", (msg) => {
-    const [seq, data] = [msg.getSequence(), msg.getData()];
-
-    console.log(`Received event ${seq}: ${data}`);
-
-    msg.ack();
-  });
+  new TicketCreatedListener(client).listen();
 });
 
 process.on("SIGINT", () => client.close());
 process.on("SIGTERM", () => client.close());
+
+abstract class Listener {
+  abstract readonly subject: string;
+  abstract readonly queueGroupName: string;
+  abstract onMessage(data: any, msg: Message): void;
+  protected ackWait: number = 5 * 1000;
+
+  constructor(private readonly client: Stan) {}
+
+  subscriptionOptions() {
+    return this.client
+      .subscriptionOptions()
+      .setDeliverAllAvailable()
+      .setManualAckMode(true)
+      .setAckWait(this.ackWait)
+      .setDurableName(this.queueGroupName);
+  }
+
+  listen() {
+    const subscription = this.client.subscribe(
+      this.subject,
+      this.queueGroupName,
+      this.subscriptionOptions()
+    );
+
+    subscription.on("message", (msg: Message) => {
+      console.log(`Message received ${this.subject} / ${this.queueGroupName}`);
+
+      const parsedData = this.parseMessage(msg);
+      this.onMessage(parsedData, msg);
+    });
+  }
+
+  parseMessage(msg: Message) {
+    const data = msg.getData();
+
+    return typeof data === "string"
+      ? JSON.parse(data)
+      : JSON.parse(data.toString("utf8"));
+  }
+}
+
+class TicketCreatedListener extends Listener {
+  subject = "ticket:created";
+  queueGroupName = "payments-service";
+
+  onMessage(data: any, msg: Message): void {
+    msg.ack();
+  }
+}
