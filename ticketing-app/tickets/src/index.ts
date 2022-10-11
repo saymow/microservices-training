@@ -5,7 +5,11 @@ import { natsWrapper } from "./nats-wrapper";
 
 const start = async () => {
   try {
-    await natsWrapper.connect("ticketing", "adjasiop", "http://nats-srv:4222");
+    await natsWrapper.connect(
+      ENV.NATS_CLUSTER_ID,
+      ENV.NATS_CLIENT_ID,
+      ENV.NATS_URL
+    );
 
     natsWrapper.client.on("close", () => {
       console.log("NATS connection closed!");

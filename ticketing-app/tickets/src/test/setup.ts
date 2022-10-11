@@ -5,6 +5,9 @@ import jwt from "jsonwebtoken";
 
 process.env.JWT_KEY = "jwt-key";
 process.env.MONGO_URI = "MONGO_URI";
+process.env.NATS_CLIENT_ID = "NATS_CLIENT_ID";
+process.env.NATS_URL = "NATS_URL";
+process.env.NATS_CLUSTER_ID = "NATS_CLUSTER_ID";
 
 import { app } from "../app";
 
