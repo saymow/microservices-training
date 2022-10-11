@@ -7,6 +7,8 @@ import {
   UnauthorizedError,
   withValidation,
 } from "@saymowtickets/common";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -32,6 +34,12 @@ router.put(
 
     ticket.set({ title, price });
     await ticket.save();
+    await new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      userId: ticket.userId,
+      title: ticket.title,
+      price: ticket.price,
+    });
 
     return res.send(ticket);
   }
