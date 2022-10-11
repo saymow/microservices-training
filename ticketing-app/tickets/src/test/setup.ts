@@ -8,6 +8,8 @@ process.env.MONGO_URI = "MONGO_URI";
 
 import { app } from "../app";
 
+jest.mock("../nats-wrapper");
+
 declare global {
   var auth: () => string[];
 }
@@ -21,6 +23,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();
 
   for (const collection of collections) {
