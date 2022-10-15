@@ -7,8 +7,11 @@ import {
 } from "@saymowtickets/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
+import { OrderCancelledPublisher } from "../events/order-cancelled-publisher";
+import { OrderCreatedPublisher } from "../events/order-created-publisher";
 import { Order } from "../models/order";
 import { Ticket } from "../models/ticket";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
@@ -41,6 +44,17 @@ router.post(
       ticket,
     });
     await order.save();
+
+    await new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      status: order.status,
+      userId: order.userId,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {
+        id: ticket.id,
+        price: ticket.price,
+      },
+    });
 
     return res.status(201).send(order);
   }
