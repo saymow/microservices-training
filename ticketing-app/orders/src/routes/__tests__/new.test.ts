@@ -49,4 +49,6 @@ describe("Post api/orders Route", () => {
       .send({ ticketId: ticket.id })
       .expect(201);
   });
+
+  it.todo("emits a order creation event on success")
 });
