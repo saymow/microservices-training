@@ -42,7 +42,7 @@ router.post(
     });
     await order.save();
 
-    res.status(201).send(order);
+    return res.status(201).send(order);
   }
 );
 
