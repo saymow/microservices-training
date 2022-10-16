@@ -4,7 +4,7 @@ import {
   UnauthorizedError,
 } from "@saymowtickets/common";
 import express, { Request, Response } from "express";
-import { OrderCancelledPublisher } from "../events/order-cancelled-publisher";
+import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
 import { Order } from "../models/order";
 import { natsWrapper } from "../nats-wrapper";
 
