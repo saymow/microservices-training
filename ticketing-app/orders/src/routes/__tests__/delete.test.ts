@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { Order, OrderStatus } from "../../models/order";
 import { Ticket } from "../../models/ticket";
+import { natsWrapper } from "../../nats-wrapper";
 
 const buildTicket = async () => {
   const ticket = new Ticket({
@@ -36,5 +37,22 @@ describe("Delete api/orders/:id Route", () => {
     expect(fetchedOrder!.status).toEqual(OrderStatus.Cancelled);
   });
 
-  it.todo("emits a order cancelation event on success");
+  it("Should emit a order cancelation event on success", async () => {
+    const ticket = await buildTicket();
+    const user = global.auth();
+
+    const { body: order } = await request(app)
+      .post("/api/orders")
+      .set("Cookie", user)
+      .send({ ticketId: ticket.id })
+      .expect(201);
+
+    await request(app)
+      .delete(`/api/orders/${order.id}`)
+      .set("Cookie", user)
+      .send()
+      .expect(204);
+
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
+  });
 });

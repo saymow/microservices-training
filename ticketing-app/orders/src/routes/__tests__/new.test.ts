@@ -50,5 +50,19 @@ describe("Post api/orders Route", () => {
       .expect(201);
   });
 
-  it.todo("emits a order creation event on success")
+  it("Should emits a order creation event on success", async () => {
+    const ticket = Ticket.build({
+      title: "title",
+      price: 20,
+    });
+    await ticket.save();
+
+    await request(app)
+      .post("/api/orders")
+      .set("Cookie", global.auth())
+      .send({ ticketId: ticket.id })
+      .expect(201);
+
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
+  });
 });
