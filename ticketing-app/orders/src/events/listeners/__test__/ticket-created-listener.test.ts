@@ -21,7 +21,7 @@ const setup = async () => {
   return { listener, data, msg: msg as Message };
 };
 
-describe("TicketUpdateListener", () => {
+describe("TicketCreatedListener", () => {
   it("Should create and save a ticket", async () => {
     const { listener, data, msg } = await setup();
 
